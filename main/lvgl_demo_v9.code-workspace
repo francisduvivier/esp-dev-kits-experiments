@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "build",
+			"path": "../build"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"lv_demos.h": "c",
+			"lvgl.h": "c",
+			"typeinfo": "c",
+			"esp-bsp.h": "c",
+			"esp32_p4_function_ev_board.h": "c",
+			"config.h": "c",
+			"esp_lcd_ek79007.h": "c"
+		}
+	}
+}
