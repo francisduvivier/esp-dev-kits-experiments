@@ -7,9 +7,10 @@
 #include "esp_check.h"
 #include "esp_memory_utils.h"
 #include "lvgl.h"
+
 #include "bsp/esp-bsp.h"
 #include "bsp/display.h"
-#include "bsp_board_extra.h"
+// #include "bsp_board_extra.h"
 
 static lv_style_t style_label;
 
@@ -85,7 +86,7 @@ void app_main(void)
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-
+ 
     bsp_display_cfg_t cfg = {
         .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
         .buffer_size = BSP_LCD_DRAW_BUFF_SIZE,
