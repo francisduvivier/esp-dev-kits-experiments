@@ -5,7 +5,6 @@ menu "Badge.team BSP"
         
         config BSP_PLATFORM_WHY2025
             select BSP_SUPPORT_ST7701
-            select BSP_SUPPORT_WHY2025_COPROC
             bool "WHY2025 badge prototype 2"
         
         config BSP_PLATFORM_P4DEVKIT01
@@ -27,7 +26,5 @@ menu "Badge.team BSP"
     config BSP_SUPPORT_EK79007
         select BSP_SUPPORT_MIPI_DSI
         bool "Support the EK79007 display driver"
-    
-    config BSP_SUPPORT_WHY2025_COPROC
-        bool "Support the WHY2025 badge's co-processors"
+
 endmenu

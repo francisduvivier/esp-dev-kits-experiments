@@ -8,7 +8,6 @@
 #include "bsp/disp_mipi_dsi.h"
 #include "bsp/disp_st7701.h"
 #include "bsp/input_gpio.h"
-#include "bsp/why2025_coproc.h"
 #include "bsp_color.h"
 
 #include <esp_log.h>
@@ -29,32 +28,11 @@ static bsp_input_driver_t const *input_tab[] = {
         },
         .get_raw = bsp_input_gpio_get_raw,
     },
-#if CONFIG_BSP_SUPPORT_WHY2025_COPROC
-    [BSP_EP_INPUT_WHY2025_CH32] = &(bsp_input_driver_t const){
-        .common = {
-            .init    = bsp_input_why2025ch32_init,
-            .deinit  = NULL,
-        },
-        .get_raw = bsp_input_why2025ch32_get_raw,
-    },
-#endif
 };
 static size_t const input_tab_len = sizeof(input_tab) / sizeof(bsp_input_driver_t const *);
 
 // LED driver table.
-static bsp_led_driver_t const *led_tab[] = {
-#if CONFIG_BSP_SUPPORT_WHY2025_COPROC
-    [BSP_EP_LED_WHY2025_CH32] = &(bsp_led_driver_t const) {
-        .common = {
-            .init = NULL,
-            .deinit = NULL,
-        },
-        .set_raw = bsp_led_why2025ch32_set_raw,
-        .get_raw = bsp_led_why2025ch32_get_raw,
-        .update  = bsp_led_why2025ch32_update,
-    }
-#endif
-};
+static bsp_led_driver_t const *led_tab[] = {};
 static size_t const led_tab_len = sizeof(led_tab) / sizeof(bsp_led_driver_t const *);
 
 // Display driver table.

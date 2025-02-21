@@ -3,13 +3,11 @@
 
 #include "hardware/why2025.h"
 
-#include "bsp/why2025_coproc.h"
-
 #include <driver/sdmmc_host.h>
 #include <esp_log.h>
 #include <esp_vfs_fat.h>
 #include <sdmmc_cmd.h>
-
+#include "bsp_device.h"
 static char const TAG[] = "why2025";
 
 
@@ -131,7 +129,6 @@ void bsp_platform_preinit() {
     // Enable GPIO interrupts.
     ESP_ERROR_CHECK_WITHOUT_ABORT(gpio_install_isr_service(0));
     // Set up the coprocessor drivers.
-    ESP_ERROR_CHECK_WITHOUT_ABORT(bsp_why2025_coproc_init());
 }
 
 // Try to mount SDcard.
@@ -159,7 +156,7 @@ static void bsp_mount_fatfs() {
 
 // Platform-specific BSP init code.
 void bsp_platform_init() {
-    ESP_ERROR_CHECK_WITHOUT_ABORT(bsp_c6_control(true, true));
+    // ESP_ERROR_CHECK_WITHOUT_ABORT(bsp_c6_control(true, true));
 
     // Try to mount SDcard.
     bsp_mount_sdcard();
@@ -167,7 +164,7 @@ void bsp_platform_init() {
     // Enable C6.
     ESP_ERROR_CHECK_WITHOUT_ABORT(sdmmc_host_init());
     ESP_ERROR_CHECK_WITHOUT_ABORT(sdmmc_host_init_slot(SDMMC_HOST_SLOT_1, &why2025_sdio_config));
-    ESP_ERROR_CHECK_WITHOUT_ABORT(bsp_c6_init());
+    // ESP_ERROR_CHECK_WITHOUT_ABORT(bsp_c6_init());
 
     // Try to mount internal FAT filesystem.
     bsp_mount_fatfs();

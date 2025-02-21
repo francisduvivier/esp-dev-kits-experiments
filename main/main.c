@@ -8,8 +8,8 @@
 #include "esp_memory_utils.h"
 #include "lvgl.h"
 
-#include "bsp/esp-bsp.h"
-#include "bsp/display.h"
+// #include "bsp/esp-bsp.h"
+// #include "bsp/display.h"
 // #include "bsp_board_extra.h"
 
 static lv_style_t style_label;
@@ -58,18 +58,18 @@ static void init_app_list_ui(void)
 
 static void show_app_list(void)
 {
-    bsp_display_lock(0);
+    // bsp_display_lock(0);
     init_app_list_ui();
-    bsp_display_unlock();
+    // bsp_display_unlock();
 }
 
 static void show_loading_screen(void)
 {
-    bsp_display_lock(0);
+    // bsp_display_lock(0);
     lv_obj_t *loading_label = lv_label_create(lv_screen_active());
     lv_label_set_text(loading_label, "loading app data...");
     lv_obj_center(loading_label);
-    bsp_display_unlock();
+    // bsp_display_unlock();
 }
 
 static void update_app_list()
@@ -87,18 +87,18 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
  
-    bsp_display_cfg_t cfg = {
-        .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
-        .buffer_size = BSP_LCD_DRAW_BUFF_SIZE,
-        .double_buffer = BSP_LCD_DRAW_BUFF_DOUBLE,
-        .flags = {
-            .buff_dma = true,
-            .buff_spiram = false,
-            .sw_rotate = false,
-        }};
-    bsp_display_start_with_config(&cfg);
-    bsp_display_backlight_on();
-    bsp_display_brightness_set(5);
+    // bsp_display_cfg_t cfg = {
+    //     .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
+    //     .buffer_size = BSP_LCD_DRAW_BUFF_SIZE,
+    //     .double_buffer = BSP_LCD_DRAW_BUFF_DOUBLE,
+    //     .flags = {
+    //         .buff_dma = true,
+    //         .buff_spiram = false,
+    //         .sw_rotate = false,
+    //     }};
+    // bsp_display_start_with_config(&cfg);
+    // bsp_display_backlight_on();
+    // bsp_display_brightness_set(5);
     show_loading_screen();
     update_app_list();
     show_app_list();
