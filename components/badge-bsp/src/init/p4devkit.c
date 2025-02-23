@@ -50,5 +50,5 @@ void bsp_platform_preinit() {
 // Platform-specific BSP init code.
 void bsp_platform_init() {
     // Register BSP device tree.
-    bsp_dev_register(&tree, true);
+    // bsp_dev_register(&tree, true);
 }

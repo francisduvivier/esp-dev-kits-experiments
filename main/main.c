@@ -7,6 +7,7 @@
 #include "esp_check.h"
 #include "esp_memory_utils.h"
 #include "lvgl.h"
+#include "bsp.h"
 
 // #include "bsp/esp-bsp.h"
 // #include "bsp/display.h"
@@ -77,6 +78,19 @@ static void update_app_list()
     vTaskDelay(pdMS_TO_TICKS(1 * 1000));
 }
 
+static void display_init_task(void *pvParameters)
+{
+    bsp_disp_backlight(50, 0, 50);
+    uint16_t red_screen[800 * 480] = {
+        [0 ... 800 * 240-1] = 0x0,
+        [800 * 240 ... 800 * 480-1] = 0x00F800
+
+    };
+    // bsp_disp_update(1, 0, &red_screen);
+
+    vTaskDelete(NULL); // Delete the task after completion
+}
+
 void app_main(void)
 {
     esp_err_t ret = nvs_flash_init();
@@ -86,7 +100,11 @@ void app_main(void)
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
- 
+    bsp_init();
+
+    xTaskCreate(display_init_task, "display_init", 4096, NULL, 5, NULL);
+
+    // bsp_disp_update(1, 0, &red_screen);
     // bsp_display_cfg_t cfg = {
     //     .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
     //     .buffer_size = BSP_LCD_DRAW_BUFF_SIZE,
@@ -99,7 +117,7 @@ void app_main(void)
     // bsp_display_start_with_config(&cfg);
     // bsp_display_backlight_on();
     // bsp_display_brightness_set(5);
-    show_loading_screen();
-    update_app_list();
-    show_app_list();
+    // show_loading_screen();
+    // update_app_list();
+    // show_app_list();
 }
