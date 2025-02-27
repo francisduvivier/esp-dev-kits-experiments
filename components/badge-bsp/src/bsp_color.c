@@ -122,7 +122,7 @@ uint16_t bsp_col_to_grey16(bsp_pixfmt_t format, uint64_t value) {
             b = (value >> 0) & 0x001f;
             r = (r * 0x8421) >> 4;
             g = (g * 0x1041) >> 3;
-            r = (r * 0x8421) >> 4;
+            b = (b * 0x8421) >> 4;
             goto recomb;
 
         // 18-bit RGB.
@@ -294,7 +294,7 @@ uint64_t bsp_col_to_rgb48(bsp_pixfmt_t format, uint64_t value) {
             b = (value >> 0) & 0x001f;
             r = (r * 0x8421) >> 4;
             g = (g * 0x1041) >> 3;
-            r = (r * 0x8421) >> 4;
+            b = (b * 0x8421) >> 4;
             goto recomb;
 
         // 18-bit RGB.
@@ -346,9 +346,9 @@ uint64_t bsp_col_to_rgb48(bsp_pixfmt_t format, uint64_t value) {
 
 // Convert 24-bit RGB to raw color data.
 uint64_t bsp_rgb_to_col(bsp_pixfmt_t format, uint32_t rgb) {
-    uint16_t r     = 0x0101 * (uint8_t)(rgb >> 16);
-    uint16_t g     = 0x0101 * (uint8_t)(rgb >> 8);
-    uint16_t b     = 0x0101 * (uint8_t)(rgb >> 0);
+    uint64_t r     = 0x0101 * (uint8_t)(rgb >> 16);
+    uint64_t g     = 0x0101 * (uint8_t)(rgb >> 8);
+    uint64_t b     = 0x0101 * (uint8_t)(rgb >> 0);
     uint64_t rgb48 = (r * 0x100000000) | (g * 0x10000) | b;
     return bsp_rgb48_to_col(format, rgb48);
 }
