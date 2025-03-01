@@ -17,6 +17,15 @@
 #include <esp_heap_caps.h>
 #include <string.h>
 
+static void show_loading_screen(void)
+{
+    // bsp_display_lock(0);
+    lv_obj_t *loading_label = lv_label_create(lv_screen_active());
+    lv_label_set_text(loading_label, "loading app data...");
+    lv_obj_center(loading_label);
+    // bsp_display_unlock();
+}
+
 // Helper function for 16-bit memset
 static inline void *memset16(void *dst, uint16_t val, size_t count)
 {
@@ -35,7 +44,6 @@ static void show_colors()
     if (red_screen == NULL)
     {
         ESP_LOGE("display_init", "Failed to allocate memory for red_screen");
-        vTaskDelete(NULL);
         return;
     }
 
@@ -62,8 +70,9 @@ static void setup_lvgl()
     const lvgl_port_cfg_t lvgl_cfg = ESP_LVGL_PORT_INIT_CONFIG();
     esp_err_t err = lvgl_port_init(&lvgl_cfg);
 
-    const int DISP_WIDTH = 800;  // TODO no hardcoding
-    const int DISP_HEIGHT = 480; // TODO no hardcoding
+    const int DISP_WIDTH = 800;            // TODO no hardcoding
+    const int DISP_HEIGHT = 480;           // TODO no hardcoding
+    const int BUFF_SIZE = DISP_WIDTH * 50; // TODO no hardcoding
     ptrdiff_t idx = bsp_find_device(dev_id);
     bsp_device_t *dev = devices[idx];
     bsp_disp_dsi_t *disp = dev->disp_aux[0];
@@ -72,10 +81,10 @@ static void setup_lvgl()
     const lvgl_port_display_cfg_t disp_cfg = {
         .io_handle = disp->io_handle,
         .panel_handle = disp->disp_handle,
-        .buffer_size = (DISP_WIDTH * DISP_HEIGHT),
-        .double_buffer = true,
-        .hres = DISP_WIDTH,
-        .vres = DISP_HEIGHT,
+        .buffer_size = BUFF_SIZE,
+        .double_buffer = false,
+        .hres = DISP_HEIGHT,
+        .vres = DISP_WIDTH,
         .monochrome = false,
         // .mipi_dsi = true, // Does not exist anymore, it's implied by using lvgl_port_add_disp_dsi function
         .color_format = LV_COLOR_FORMAT_RGB565,
@@ -87,11 +96,12 @@ static void setup_lvgl()
         .flags = {
             .buff_dma = true,
             .swap_bytes = false,
-            .buff_spiram = true,
+            .buff_spiram = false,
+            .sw_rotate = true,
         }};
     const lvgl_port_display_dsi_cfg_t dsi_cfg = {
         .flags = {
-            .avoid_tearing = true,
+            .avoid_tearing = false,
         }};
     // Add error checking
     lv_disp_t *disp_handle = lvgl_port_add_disp_dsi(&disp_cfg, &dsi_cfg);
@@ -109,9 +119,12 @@ static void display_init_task(void *pvParameters)
 {
     bsp_disp_backlight(dev_id, 0, 2);
     setup_lvgl();
-    show_button();
+    ESP_LOGI("TAG", "setup_lvgl  DONE");
+    show_loading_screen();
     // show_colors();
+    ESP_LOGI("TAG", "TASK delete START");
     vTaskDelete(NULL); // Delete the task after completion
+    ESP_LOGI("TAG", "TASK deleted");
 }
 
 void app_main(void)
