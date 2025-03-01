@@ -85,7 +85,7 @@ static uint32_t       next_dev_id      = 1;
 // Number of registered devices.
 static size_t         devices_len      = 0;
 // Registered devices.
-static bsp_device_t **devices          = NULL;
+bsp_device_t **devices          = NULL;
 // Per-modkey counter.
 static uint16_t       modkey_count[16] = {0};
 // Current modkey value.
@@ -207,7 +207,7 @@ static void run_init_funcs(bsp_device_t *dev, bool is_deinit) {
 
 
 // Get a device from the list.
-static ptrdiff_t bsp_find_device(uint32_t dev_id) {
+ptrdiff_t bsp_find_device(uint32_t dev_id) {
     for (size_t i = 0; i < devices_len; i++) {
         if (devices[i]->id == dev_id) {
             return i;

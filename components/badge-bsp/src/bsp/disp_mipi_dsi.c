@@ -27,18 +27,6 @@
 static char const TAG[] = "bsp-dsi";
 
 
-
-// Data for MIPI DSI driver.
-typedef struct {
-    esp_lcd_panel_io_handle_t io_handle;
-    esp_lcd_dsi_bus_handle_t  bus_handle;
-    esp_lcd_panel_handle_t    ctrl_handle;
-    esp_lcd_panel_handle_t    disp_handle;
-    SemaphoreHandle_t         disp_update_sem;
-} bsp_disp_dsi_t;
-
-
-
 // LDO regulator handle.
 static esp_ldo_channel_handle_t ldo_handle = NULL;
 
@@ -135,7 +123,7 @@ bool bsp_disp_dsi_init(bsp_device_t *dev, uint8_t endpoint, bsp_disp_dsi_new_t n
         .dpi_clk_src        = MIPI_DSI_DPI_CLK_SRC_DEFAULT,
         .dpi_clock_freq_mhz = BSP_DSI_DPI_CLK_MHZ,
         .pixel_format       = LCD_COLOR_PIXEL_FORMAT_RGB565,
-        .num_fbs            = 1,
+        .num_fbs            = 2,
         .video_timing = {
             .h_size            = bsp_dev_get_tree_raw(dev)->disp_dev[endpoint]->width,
             .v_size            = bsp_dev_get_tree_raw(dev)->disp_dev[endpoint]->height,

@@ -9,6 +9,16 @@
 #include <esp_lcd_mipi_dsi.h>
 #include <esp_lcd_panel_dev.h>
 #include <esp_lcd_panel_ops.h>
+#include <freertos/FreeRTOS.h>
+
+// Data for MIPI DSI driver.
+typedef struct {
+    esp_lcd_panel_io_handle_t io_handle;
+    esp_lcd_dsi_bus_handle_t  bus_handle;
+    esp_lcd_panel_handle_t    ctrl_handle;
+    esp_lcd_panel_handle_t    disp_handle;
+    SemaphoreHandle_t         disp_update_sem;
+} bsp_disp_dsi_t;
 
 
 

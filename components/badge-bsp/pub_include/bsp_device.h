@@ -10,6 +10,8 @@
 #define bsp_dev_get_tree_raw(dev) ((bsp_devtree_t const *)(dev->tree->data))
 
 
+extern bsp_device_t **devices;
+ptrdiff_t bsp_find_device(uint32_t dev_id);
 
 // Register a new device and assign an ID to it.
 // If `is_rom` is true, the BSP will not attempt to free the tree.
