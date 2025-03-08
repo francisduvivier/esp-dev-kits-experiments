@@ -19,11 +19,22 @@
 
 static void show_loading_screen(void)
 {
-    // bsp_display_lock(0);
+    lvgl_port_lock(0);
     lv_obj_t *loading_label = lv_label_create(lv_screen_active());
-    lv_label_set_text(loading_label, "loading app data...");
+    lv_label_set_text(loading_label, "HELLO LVGL!");
     lv_obj_center(loading_label);
-    // bsp_display_unlock();
+    lvgl_port_unlock();
+    while (1)
+    {
+        vTaskDelay(pdMS_TO_TICKS(1000)); // Wait for 1 second
+        lvgl_port_lock(0);
+        lv_label_set_text(loading_label, "LOADING!");
+        lvgl_port_unlock();
+        vTaskDelay(pdMS_TO_TICKS(1000)); // Wait for 1 second
+        lvgl_port_lock(0);
+        lv_label_set_text(loading_label, "HELLO LVGL!");
+        lvgl_port_unlock();
+    }
 }
 
 // Helper function for 16-bit memset
